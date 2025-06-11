@@ -38,13 +38,13 @@ class _ProdutoPageState extends State<ProdutoPage> {
     });
 
     if (index == 1) {
-      // Cadastrar nova camisa
+
       _abrirCadastro();
     } else if (index == 2) {
-      // Ir para tela Gerenciar Camisas
+
       Navigator.pushNamed(context, '/gerenciar');
     }
-    // index == 0 → Início → permanece na tela atual
+
   }
 
   @override

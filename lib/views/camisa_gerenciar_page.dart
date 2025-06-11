@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/produtos.dart';
 import '../persistence/camisa_dao.dart';
 import 'cadastro_camisa_page.dart';
-import '../widgets/menu_inferior.dart';  // <== importar aqui
+import '../widgets/menu_inferior.dart';
 
 class CamisaGerenciarPage extends StatefulWidget {
   const CamisaGerenciarPage({Key? key}) : super(key: key);

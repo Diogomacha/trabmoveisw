@@ -25,7 +25,7 @@ class CamisaCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Imagem
+
             ClipRRect(
               borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
               child: Image(
@@ -39,13 +39,13 @@ class CamisaCard extends StatelessWidget {
               ),
             ),
 
-            // Conteúdo
+
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(8),
                 child: Column(
                   children: [
-                    // Troquei aqui: nome no lugar da descrição
+
                     Text(
                       camisa.nome,
                       style: const TextStyle(fontWeight: FontWeight.bold),

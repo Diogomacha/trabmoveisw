@@ -3,9 +3,9 @@ import "package:intl/intl.dart";
 class Camisa {
   final int? id;
   final String nome;
-  final String imagem; // Renomeado para 'foto'
+  final String imagem;
   final String descricao;
-  final String preco; // Armazenado como String
+  final String preco;
 
   Camisa({
     this.id,
@@ -19,7 +19,7 @@ class Camisa {
     return {
       'id': id,
       'nome': nome,
-      'imagem': imagem, // nome correto da coluna no banco
+      'imagem': imagem,
       'descricao': descricao,
       'preco': preco,
     };
@@ -31,7 +31,7 @@ class Camisa {
       nome: map['nome'],
       imagem: map['imagem'],
       descricao: map['descricao'],
-      preco: map['preco'].toString(), // Corrigido aqui
+      preco: map['preco'].toString(),
     );
   }
 

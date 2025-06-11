@@ -30,7 +30,7 @@ class _CadastroCamisaPageState extends State<CadastroCamisaPage> {
       _descricaoController.text = widget.camisaParaEditar!.descricao;
       _precoController.text = widget.camisaParaEditar!.preco;
       _imagemController.text = widget.camisaParaEditar!.imagem;
-      _indiceSelecionado = 1; // se estiver editando, pode ser aba diferente, se quiser
+      _indiceSelecionado = 1;
     }
   }
 
@@ -61,7 +61,7 @@ class _CadastroCamisaPageState extends State<CadastroCamisaPage> {
         await CamisaDao().atualizarCamisa(novaCamisa);
       }
 
-      Navigator.pop(context, true); // indica que salvou para atualizar lista
+      Navigator.pop(context, true);
     }
   }
 
@@ -78,7 +78,7 @@ class _CadastroCamisaPageState extends State<CadastroCamisaPage> {
         Navigator.pushReplacementNamed(context, '/gerenciar');
         break;
       case 2:
-      // já está na página cadastrar, não faz nada
+
         break;
     }
   }
