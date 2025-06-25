@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import '../models/produtos.dart';
 
@@ -5,6 +6,16 @@ class CamisaDetalhe extends StatelessWidget {
   final Camisa camisa;
 
   const CamisaDetalhe({Key? key, required this.camisa}) : super(key: key);
+
+  ImageProvider<Object> _resolverImagem(String caminho) {
+    if (caminho.startsWith('/')) {
+      return FileImage(File(caminho));
+    } else if (caminho.startsWith('http')) {
+      return NetworkImage(caminho);
+    } else {
+      return AssetImage(caminho);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +33,12 @@ class CamisaDetalhe extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
-              child: Image.network(
-                camisa.imagem,
+              child: Image(
+                image: _resolverImagem(camisa.imagem),
                 height: 200,
                 fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) =>
+                const Icon(Icons.broken_image, size: 200),
               ),
             ),
             const SizedBox(height: 20),
@@ -39,7 +52,7 @@ class CamisaDetalhe extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Text(
-              camisa.preco,
+              camisa.precoFormatado,
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.green[700],
@@ -77,3 +90,4 @@ class CamisaDetalhe extends StatelessWidget {
     );
   }
 }
+

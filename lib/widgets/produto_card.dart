@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import '../models/produtos.dart';
 import '../views/produto_detalhe.dart';
@@ -6,6 +7,16 @@ class CamisaCard extends StatelessWidget {
   final Camisa camisa;
 
   const CamisaCard({Key? key, required this.camisa}) : super(key: key);
+
+  ImageProvider<Object> _resolverImagem(String caminho) {
+    if (caminho.startsWith('/')) {
+      return FileImage(File(caminho));
+    } else if (caminho.startsWith('http')) {
+      return NetworkImage(caminho);
+    } else {
+      return AssetImage(caminho);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,27 +36,20 @@ class CamisaCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-
             ClipRRect(
               borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
               child: Image(
-                image: camisa.imagem.startsWith('http')
-                    ? NetworkImage(camisa.imagem)
-                    : AssetImage(camisa.imagem) as ImageProvider,
+                image: _resolverImagem(camisa.imagem),
                 height: 120,
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) =>
-                const Icon(Icons.broken_image, size: 120),
+                errorBuilder: (_, __, ___) => const Icon(Icons.broken_image, size: 120),
               ),
             ),
-
-
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(8),
                 child: Column(
                   children: [
-
                     Text(
                       camisa.nome,
                       style: const TextStyle(fontWeight: FontWeight.bold),
@@ -54,7 +58,6 @@ class CamisaCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 4),
-
                     Text(
                       camisa.precoFormatado,
                       style: const TextStyle(
@@ -64,7 +67,6 @@ class CamisaCard extends StatelessWidget {
                       ),
                     ),
                     const Spacer(),
-
                     ElevatedButton.icon(
                       onPressed: () {
                         ScaffoldMessenger.of(context).showSnackBar(

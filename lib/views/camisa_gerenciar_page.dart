@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import '../models/produtos.dart';
 import '../persistence/camisa_dao.dart';
@@ -35,10 +36,7 @@ class _CamisaGerenciarPageState extends State<CamisaGerenciarPage> {
         builder: (_) => CadastroCamisaPage(camisaParaEditar: camisa),
       ),
     );
-
-    if (resultado == true) {
-      _carregarCamisas();
-    }
+    if (resultado == true) _carregarCamisas();
   }
 
   void _excluirCamisa(int id) async {
@@ -54,17 +52,26 @@ class _CamisaGerenciarPageState extends State<CamisaGerenciarPage> {
       _indiceSelecionado = index;
     });
 
-
     switch (index) {
       case 0:
         Navigator.pushReplacementNamed(context, '/home');
         break;
       case 1:
-
-        break;
-      case 2:
         Navigator.pushReplacementNamed(context, '/cadastro');
         break;
+      case 2:
+
+        break;
+    }
+  }
+
+  ImageProvider _getImage(String caminho) {
+    if (caminho.startsWith('/')) {
+      return FileImage(File(caminho));
+    } else if (caminho.startsWith('http')) {
+      return NetworkImage(caminho);
+    } else {
+      return AssetImage(caminho);
     }
   }
 
@@ -86,20 +93,13 @@ class _CamisaGerenciarPageState extends State<CamisaGerenciarPage> {
             child: ListTile(
               leading: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: camisa.imagem.startsWith('http')
-                    ? Image.network(
-                  camisa.imagem,
+                child: Image(
+                  image: _getImage(camisa.imagem),
                   width: 60,
                   height: 60,
                   fit: BoxFit.cover,
                   errorBuilder: (_, __, ___) =>
                   const Icon(Icons.broken_image, size: 60),
-                )
-                    : Image.asset(
-                  camisa.imagem,
-                  width: 60,
-                  height: 60,
-                  fit: BoxFit.cover,
                 ),
               ),
               title: Text(camisa.nome),

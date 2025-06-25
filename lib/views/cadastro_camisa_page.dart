@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/produtos.dart';
 import '../persistence/camisa_dao.dart';
 import '../widgets/menu_inferior.dart';
+import '../widgets/imagem_picker_produto.dart';
 
 class CadastroCamisaPage extends StatefulWidget {
   final Camisa? camisaParaEditar;
@@ -18,9 +19,11 @@ class _CadastroCamisaPageState extends State<CadastroCamisaPage> {
   final TextEditingController _nomeController = TextEditingController();
   final TextEditingController _descricaoController = TextEditingController();
   final TextEditingController _precoController = TextEditingController();
-  final TextEditingController _imagemController = TextEditingController();
 
   int _indiceSelecionado = 1;
+
+
+  String? _imagemSelecionada;
 
   @override
   void initState() {
@@ -29,7 +32,7 @@ class _CadastroCamisaPageState extends State<CadastroCamisaPage> {
       _nomeController.text = widget.camisaParaEditar!.nome;
       _descricaoController.text = widget.camisaParaEditar!.descricao;
       _precoController.text = widget.camisaParaEditar!.preco;
-      _imagemController.text = widget.camisaParaEditar!.imagem;
+      _imagemSelecionada = widget.camisaParaEditar!.imagem;
       _indiceSelecionado = 1;
     }
   }
@@ -39,7 +42,6 @@ class _CadastroCamisaPageState extends State<CadastroCamisaPage> {
     _nomeController.dispose();
     _descricaoController.dispose();
     _precoController.dispose();
-    _imagemController.dispose();
     super.dispose();
   }
 
@@ -52,7 +54,7 @@ class _CadastroCamisaPageState extends State<CadastroCamisaPage> {
         nome: _nomeController.text.trim(),
         descricao: _descricaoController.text.trim(),
         preco: precoCorrigido,
-        imagem: _imagemController.text.trim(),
+        imagem: _imagemSelecionada ?? '',
       );
 
       if (widget.camisaParaEditar == null) {
@@ -96,7 +98,7 @@ class _CadastroCamisaPageState extends State<CadastroCamisaPage> {
         padding: const EdgeInsets.all(16),
         child: Form(
           key: _formKey,
-          child: Column(
+          child: ListView(
             children: [
               TextFormField(
                 controller: _nomeController,
@@ -134,19 +136,21 @@ class _CadastroCamisaPageState extends State<CadastroCamisaPage> {
                   return null;
                 },
               ),
-              TextFormField(
-                controller: _imagemController,
-                decoration: const InputDecoration(
-                  labelText: 'Caminho da imagem (ex: assets/images/camisa1.png)',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Informe o caminho da imagem';
-                  }
-                  return null;
+
+              const SizedBox(height: 20),
+
+
+              ImagemPickerProduto(
+                imagemPathInicial: _imagemSelecionada,
+                onImageSelected: (String? path) {
+                  setState(() {
+                    _imagemSelecionada = path;
+                  });
                 },
               ),
+
               const SizedBox(height: 24),
+
               ElevatedButton(
                 onPressed: _salvarCamisa,
                 style: ElevatedButton.styleFrom(
