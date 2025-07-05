@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../models/produtos.dart';
+import '../controllers/carrinho_controller.dart';
 
 class CamisaDetalhe extends StatelessWidget {
   final Camisa camisa;
@@ -62,6 +64,8 @@ class CamisaDetalhe extends StatelessWidget {
             const SizedBox(height: 24),
             ElevatedButton.icon(
               onPressed: () {
+                final carrinho = context.read<CarrinhoController>();
+                carrinho.adicionar(camisa);
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Produto adicionado ao carrinho!')),
                 );
@@ -90,4 +94,3 @@ class CamisaDetalhe extends StatelessWidget {
     );
   }
 }
-

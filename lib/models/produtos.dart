@@ -1,11 +1,11 @@
-import "package:intl/intl.dart";
+import 'package:intl/intl.dart';
 
 class Camisa {
   final int? id;
   final String nome;
   final String imagem;
   final String descricao;
-  final String preco;
+  final double preco;
 
   Camisa({
     this.id,
@@ -31,17 +31,15 @@ class Camisa {
       nome: map['nome'],
       imagem: map['imagem'],
       descricao: map['descricao'],
-      preco: map['preco'].toString(),
+      preco: map['preco'] is int
+          ? (map['preco'] as int).toDouble()
+          : map['preco'] is String
+          ? double.tryParse(map['preco'].replaceAll(',', '.')) ?? 0.0
+          : map['preco'] ?? 0.0,
     );
   }
 
-
   String get precoFormatado {
-    try {
-      final valor = double.tryParse(preco.replaceAll(',', '.')) ?? 0.0;
-      return NumberFormat.simpleCurrency(locale: 'pt_BR').format(valor);
-    } catch (_) {
-      return preco;
-    }
+    return NumberFormat.simpleCurrency(locale: 'pt_BR').format(preco);
   }
 }

@@ -21,8 +21,6 @@ class _CadastroCamisaPageState extends State<CadastroCamisaPage> {
   final TextEditingController _precoController = TextEditingController();
 
   int _indiceSelecionado = 1;
-
-
   String? _imagemSelecionada;
 
   @override
@@ -31,9 +29,8 @@ class _CadastroCamisaPageState extends State<CadastroCamisaPage> {
     if (widget.camisaParaEditar != null) {
       _nomeController.text = widget.camisaParaEditar!.nome;
       _descricaoController.text = widget.camisaParaEditar!.descricao;
-      _precoController.text = widget.camisaParaEditar!.preco;
+      _precoController.text = widget.camisaParaEditar!.preco.toStringAsFixed(2);
       _imagemSelecionada = widget.camisaParaEditar!.imagem;
-      _indiceSelecionado = 1;
     }
   }
 
@@ -47,7 +44,7 @@ class _CadastroCamisaPageState extends State<CadastroCamisaPage> {
 
   Future<void> _salvarCamisa() async {
     if (_formKey.currentState!.validate()) {
-      final precoCorrigido = _precoController.text.replaceAll(',', '.');
+      final precoCorrigido = double.parse(_precoController.text.replaceAll(',', '.'));
 
       final novaCamisa = Camisa(
         id: widget.camisaParaEditar?.id,
@@ -80,7 +77,6 @@ class _CadastroCamisaPageState extends State<CadastroCamisaPage> {
         Navigator.pushReplacementNamed(context, '/gerenciar');
         break;
       case 2:
-
         break;
     }
   }
@@ -104,9 +100,7 @@ class _CadastroCamisaPageState extends State<CadastroCamisaPage> {
                 controller: _nomeController,
                 decoration: const InputDecoration(labelText: 'Nome'),
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Informe o nome';
-                  }
+                  if (value == null || value.isEmpty) return 'Informe o nome';
                   return null;
                 },
               ),
@@ -114,32 +108,22 @@ class _CadastroCamisaPageState extends State<CadastroCamisaPage> {
                 controller: _descricaoController,
                 decoration: const InputDecoration(labelText: 'Descrição'),
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Informe a descrição';
-                  }
+                  if (value == null || value.isEmpty) return 'Informe a descrição';
                   return null;
                 },
               ),
               TextFormField(
                 controller: _precoController,
                 decoration: const InputDecoration(labelText: 'Preço'),
-                keyboardType:
-                const TextInputType.numberWithOptions(decimal: true),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Informe o preço';
-                  }
+                  if (value == null || value.isEmpty) return 'Informe o preço';
                   final parsed = double.tryParse(value.replaceAll(',', '.'));
-                  if (parsed == null) {
-                    return 'Digite um número válido (ex: 30.00)';
-                  }
+                  if (parsed == null) return 'Digite um número válido (ex: 30.00)';
                   return null;
                 },
               ),
-
               const SizedBox(height: 20),
-
-
               ImagemPickerProduto(
                 imagemPathInicial: _imagemSelecionada,
                 onImageSelected: (String? path) {
@@ -148,9 +132,7 @@ class _CadastroCamisaPageState extends State<CadastroCamisaPage> {
                   });
                 },
               ),
-
               const SizedBox(height: 24),
-
               ElevatedButton(
                 onPressed: _salvarCamisa,
                 style: ElevatedButton.styleFrom(
