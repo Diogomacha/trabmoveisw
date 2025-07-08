@@ -22,13 +22,15 @@ class AppDatabase {
       version: 1,
       onCreate: (db, version) async {
 
+
         await db.execute('''
           CREATE TABLE camisas (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nome TEXT NOT NULL,
             descricao TEXT,
             preco REAL,
-            imagem TEXT
+            imagem TEXT,
+            tamanho TEXT NOT NULL
           )
         ''');
 

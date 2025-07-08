@@ -4,10 +4,18 @@ import 'package:provider/provider.dart';
 import '../models/produtos.dart';
 import '../controllers/carrinho_controller.dart';
 
-class CamisaDetalhe extends StatelessWidget {
+class CamisaDetalhe extends StatefulWidget {
   final Camisa camisa;
 
   const CamisaDetalhe({Key? key, required this.camisa}) : super(key: key);
+
+  @override
+  State<CamisaDetalhe> createState() => _CamisaDetalheState();
+}
+
+class _CamisaDetalheState extends State<CamisaDetalhe> {
+  final List<String> _tamanhos = ['P', 'M', 'G', 'GG'];
+  String? _tamanhoSelecionado;
 
   ImageProvider<Object> _resolverImagem(String caminho) {
     if (caminho.startsWith('/')) {
@@ -17,6 +25,12 @@ class CamisaDetalhe extends StatelessWidget {
     } else {
       return AssetImage(caminho);
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _tamanhoSelecionado = widget.camisa.tamanho ?? 'M';
   }
 
   @override
@@ -40,7 +54,7 @@ class CamisaDetalhe extends StatelessWidget {
                   BoxShadow(
                     color: Colors.black12,
                     blurRadius: 10,
-                    offset: Offset(0, 5),
+                    offset: const Offset(0, 5),
                   )
                 ],
                 borderRadius: BorderRadius.circular(20),
@@ -49,7 +63,7 @@ class CamisaDetalhe extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: Image(
-                  image: _resolverImagem(camisa.imagem),
+                  image: _resolverImagem(widget.camisa.imagem),
                   height: 220,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -60,7 +74,7 @@ class CamisaDetalhe extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             Text(
-              camisa.descricao,
+              widget.camisa.descricao,
               style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -70,18 +84,50 @@ class CamisaDetalhe extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              camisa.precoFormatado,
+              widget.camisa.precoFormatado,
               style: TextStyle(
                 fontSize: 22,
                 color: Colors.green[800],
                 fontWeight: FontWeight.w700,
               ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 24),
+            DropdownButtonFormField<String>(
+              value: _tamanhoSelecionado,
+              items: _tamanhos.map((tamanho) {
+                return DropdownMenuItem(
+                  value: tamanho,
+                  child: Text('Tamanho $tamanho'),
+                );
+              }).toList(),
+              onChanged: (value) {
+                setState(() {
+                  _tamanhoSelecionado = value;
+                });
+              },
+              decoration: InputDecoration(
+                labelText: 'Selecione o Tamanho',
+                prefixIcon: const Icon(Icons.straighten),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              validator: (value) => value == null ? 'Selecione um tamanho' : null,
+            ),
+            const SizedBox(height: 24),
             ElevatedButton.icon(
               onPressed: () {
-                final carrinho = context.read<CarrinhoController>();
-                carrinho.adicionar(camisa);
+                if (_tamanhoSelecionado == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Selecione um tamanho')),
+                  );
+                  return;
+                }
+
+                final camisaComTamanho = widget.camisa.copyWith(
+                  tamanho: _tamanhoSelecionado!,
+                );
+
+                context.read<CarrinhoController>().adicionarCamisa(camisaComTamanho);
+
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Produto adicionado ao carrinho!')),
                 );

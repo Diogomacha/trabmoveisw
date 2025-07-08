@@ -45,7 +45,6 @@ class _ProdutoPageState extends State<ProdutoPage> {
       case 2:
         Navigator.pushNamed(context, '/gerenciar');
         break;
-    // case 0: Já está na home
       default:
         break;
     }
@@ -66,6 +65,15 @@ class _ProdutoPageState extends State<ProdutoPage> {
         backgroundColor: Colors.green[700],
         centerTitle: true,
         elevation: 4,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            tooltip: 'Sair',
+            onPressed: () {
+              Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),

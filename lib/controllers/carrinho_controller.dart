@@ -1,14 +1,31 @@
 import 'package:flutter/material.dart';
-import '../models/carrinho_item.dart';
 import '../models/produtos.dart';
+
+class CarrinhoItem {
+  final Camisa camisa;
+  int quantidade;
+
+  CarrinhoItem({required this.camisa, this.quantidade = 1});
+}
 
 class CarrinhoController extends ChangeNotifier {
   final List<CarrinhoItem> _itens = [];
 
-  List<CarrinhoItem> get itens => _itens;
+  List<CarrinhoItem> get itens => List.unmodifiable(_itens);
 
-  void adicionar(Camisa camisa) {
-    final index = _itens.indexWhere((item) => item.camisa.id == camisa.id);
+  double get total {
+    double soma = 0;
+    for (var item in _itens) {
+      soma += item.camisa.preco * item.quantidade;
+    }
+    return soma;
+  }
+
+  void adicionarCamisa(Camisa camisa) {
+
+    final index = _itens.indexWhere((item) =>
+    item.camisa.id == camisa.id && item.camisa.tamanho == camisa.tamanho);
+
     if (index >= 0) {
       _itens[index].quantidade++;
     } else {
@@ -18,17 +35,14 @@ class CarrinhoController extends ChangeNotifier {
   }
 
   void remover(Camisa camisa) {
-    _itens.removeWhere((item) => item.camisa.id == camisa.id);
-    notifyListeners();
-  }
-
-  void limpar() {
-    _itens.clear();
+    _itens.removeWhere((item) =>
+    item.camisa.id == camisa.id && item.camisa.tamanho == camisa.tamanho);
     notifyListeners();
   }
 
   void incrementarQuantidade(Camisa camisa) {
-    final index = _itens.indexWhere((item) => item.camisa.id == camisa.id);
+    final index = _itens.indexWhere((item) =>
+    item.camisa.id == camisa.id && item.camisa.tamanho == camisa.tamanho);
     if (index >= 0) {
       _itens[index].quantidade++;
       notifyListeners();
@@ -36,7 +50,8 @@ class CarrinhoController extends ChangeNotifier {
   }
 
   void decrementarQuantidade(Camisa camisa) {
-    final index = _itens.indexWhere((item) => item.camisa.id == camisa.id);
+    final index = _itens.indexWhere((item) =>
+    item.camisa.id == camisa.id && item.camisa.tamanho == camisa.tamanho);
     if (index >= 0) {
       if (_itens[index].quantidade > 1) {
         _itens[index].quantidade--;
@@ -47,10 +62,8 @@ class CarrinhoController extends ChangeNotifier {
     }
   }
 
-  double get total {
-    return _itens.fold(
-      0,
-          (total, item) => total + (item.camisa.preco * item.quantidade),
-    );
+  void limpar() {
+    _itens.clear();
+    notifyListeners();
   }
 }

@@ -22,6 +22,9 @@ class _CadastroCamisaPageState extends State<CadastroCamisaPage> {
 
   int _indiceSelecionado = 1;
   String? _imagemSelecionada;
+  String? _tamanhoSelecionado;
+
+  final List<String> _tamanhos = ['P', 'M', 'G', 'GG'];
 
   @override
   void initState() {
@@ -31,6 +34,7 @@ class _CadastroCamisaPageState extends State<CadastroCamisaPage> {
       _descricaoController.text = widget.camisaParaEditar!.descricao;
       _precoController.text = widget.camisaParaEditar!.preco.toStringAsFixed(2);
       _imagemSelecionada = widget.camisaParaEditar!.imagem;
+      _tamanhoSelecionado = widget.camisaParaEditar!.tamanho;
     }
   }
 
@@ -52,6 +56,7 @@ class _CadastroCamisaPageState extends State<CadastroCamisaPage> {
         descricao: _descricaoController.text.trim(),
         preco: precoCorrigido,
         imagem: _imagemSelecionada ?? '',
+        tamanho: _tamanhoSelecionado ?? 'M', // padrão se não for selecionado
       );
 
       if (widget.camisaParaEditar == null) {
@@ -136,6 +141,27 @@ class _CadastroCamisaPageState extends State<CadastroCamisaPage> {
                   if (parsed == null) return 'Digite um valor válido (ex: 39.90)';
                   return null;
                 },
+              ),
+              const SizedBox(height: 16),
+              DropdownButtonFormField<String>(
+                value: _tamanhoSelecionado,
+                items: _tamanhos.map((tamanho) {
+                  return DropdownMenuItem<String>(
+                    value: tamanho,
+                    child: Text('Tamanho $tamanho'),
+                  );
+                }).toList(),
+                onChanged: (valor) {
+                  setState(() {
+                    _tamanhoSelecionado = valor;
+                  });
+                },
+                decoration: InputDecoration(
+                  labelText: 'Tamanho',
+                  prefixIcon: const Icon(Icons.straighten),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+                validator: (value) => value == null ? 'Selecione um tamanho' : null,
               ),
               const SizedBox(height: 24),
               ImagemPickerProduto(

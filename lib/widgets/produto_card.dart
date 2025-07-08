@@ -8,7 +8,9 @@ import '../controllers/carrinho_controller.dart';
 class CamisaCard extends StatelessWidget {
   final Camisa camisa;
 
-  const CamisaCard({Key? key, required this.camisa}) : super(key: key);
+  CamisaCard({Key? key, required this.camisa}) : super(key: key);
+
+  final List<String> tamanhosDisponiveis = ['P', 'M', 'G', 'GG'];
 
   ImageProvider<Object> _resolverImagem(String caminho) {
     if (caminho.startsWith('/')) {
@@ -56,51 +58,80 @@ class CamisaCard extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      camisa.nome,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                        color: Colors.black87,
-                      ),
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      camisa.precoFormatado,
-                      style: const TextStyle(
-                        color: Colors.green,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const Spacer(),
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        final carrinho = context.read<CarrinhoController>();
-                        carrinho.adicionar(camisa);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Adicionado ao carrinho!')),
-                        );
-                      },
-                      icon: const Icon(Icons.shopping_cart_outlined, size: 18),
-                      label: const Text('Adicionar'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green[700],
-                        minimumSize: const Size(double.infinity, 40),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                child: SingleChildScrollView(  // <-- Corrigido aqui
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        camisa.nome,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          color: Colors.black87,
                         ),
-                        elevation: 2,
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 6),
+
+                      Center(
+                        child: Wrap(
+                          spacing: 6,
+                          children: tamanhosDisponiveis.map((tamanho) {
+                            return Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: Colors.green[100],
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text(
+                                tamanho,
+                                style: const TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+
+                      const SizedBox(height: 8),
+
+                      Text(
+                        camisa.precoFormatado,
+                        style: const TextStyle(
+                          color: Colors.green,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 8),  // substitui Spacer por SizedBox para evitar problema de overflow
+
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => CamisaDetalhe(camisa: camisa),
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.info_outline, size: 18),
+                        label: const Text('Detalhes'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green[700],
+                          minimumSize: const Size(double.infinity, 40),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          elevation: 2,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
