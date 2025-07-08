@@ -91,39 +91,53 @@ class _CadastroCamisaPageState extends State<CadastroCamisaPage> {
         backgroundColor: Colors.green[700],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         child: Form(
           key: _formKey,
           child: ListView(
             children: [
               TextFormField(
                 controller: _nomeController,
-                decoration: const InputDecoration(labelText: 'Nome'),
+                decoration: InputDecoration(
+                  labelText: 'Nome',
+                  prefixIcon: const Icon(Icons.checkroom_outlined),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                ),
                 validator: (value) {
-                  if (value == null || value.isEmpty) return 'Informe o nome';
+                  if (value == null || value.isEmpty) return 'Digite o nome da camisa';
                   return null;
                 },
               ),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _descricaoController,
-                decoration: const InputDecoration(labelText: 'Descrição'),
+                decoration: InputDecoration(
+                  labelText: 'Descrição',
+                  prefixIcon: const Icon(Icons.description_outlined),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                ),
                 validator: (value) {
-                  if (value == null || value.isEmpty) return 'Informe a descrição';
+                  if (value == null || value.isEmpty) return 'Digite uma descrição';
                   return null;
                 },
               ),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _precoController,
-                decoration: const InputDecoration(labelText: 'Preço'),
+                decoration: InputDecoration(
+                  labelText: 'Preço',
+                  prefixIcon: const Icon(Icons.attach_money),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                ),
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 validator: (value) {
-                  if (value == null || value.isEmpty) return 'Informe o preço';
+                  if (value == null || value.isEmpty) return 'Digite o preço';
                   final parsed = double.tryParse(value.replaceAll(',', '.'));
-                  if (parsed == null) return 'Digite um número válido (ex: 30.00)';
+                  if (parsed == null) return 'Digite um valor válido (ex: 39.90)';
                   return null;
                 },
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 24),
               ImagemPickerProduto(
                 imagemPathInicial: _imagemSelecionada,
                 onImageSelected: (String? path) {
@@ -133,13 +147,19 @@ class _CadastroCamisaPageState extends State<CadastroCamisaPage> {
                 },
               ),
               const SizedBox(height: 24),
-              ElevatedButton(
+              ElevatedButton.icon(
                 onPressed: _salvarCamisa,
+                icon: Icon(isEditing ? Icons.save_outlined : Icons.check),
+                label: Text(isEditing ? 'Salvar alterações' : 'Cadastrar'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green[700],
                   minimumSize: const Size(double.infinity, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  elevation: 3,
+                  textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 ),
-                child: Text(isEditing ? 'Salvar Alterações' : 'Cadastrar'),
               ),
             ],
           ),

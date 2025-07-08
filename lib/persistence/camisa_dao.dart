@@ -1,10 +1,10 @@
 import 'package:sqflite/sqflite.dart';
-import '../core/produto_database.dart';
+import '../core/app_database.dart';
 import '../models/produtos.dart';
 
 class CamisaDao {
   Future<Database> _getDatabase() async {
-    return await ProdutoDatabase.instance.database;
+    return await AppDatabase.instance.database;
   }
 
   Future<int> inserirCamisa(Camisa camisa) async {

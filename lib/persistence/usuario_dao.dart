@@ -1,36 +1,15 @@
 import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
+import '../core/app_database.dart';
 import '../models/usuario.dart';
 
 class UsuarioDao {
   static const String _tabela = 'usuarios';
 
-  Future<Database> _abrirBanco() async {
-    final caminhoBanco = await getDatabasesPath();
-    return openDatabase(
-      join(caminhoBanco, 'futebol_app.db'),
-      version: 1,
-      onCreate: (db, version) {
-        db.execute('''
-          CREATE TABLE $_tabela (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome TEXT NOT NULL,
-            email TEXT NOT NULL UNIQUE,
-            senha TEXT NOT NULL,
-            tipo TEXT NOT NULL DEFAULT 'usuario'
-          )
-        ''');
-      },
-    );
-  }
-
   Future<void> inserirUsuario(Usuario usuario) async {
-    final db = await _abrirBanco();
-
+    final db = await AppDatabase.instance.database;
 
     final countResult = await db.rawQuery('SELECT COUNT(*) as count FROM $_tabela');
     final count = Sqflite.firstIntValue(countResult) ?? 0;
-
 
     final tipoUsuario = count == 0 ? 'gerente' : 'usuario';
 
@@ -40,13 +19,19 @@ class UsuarioDao {
       email: usuario.email,
       senha: usuario.senha,
       tipo: tipoUsuario,
+      cep: usuario.cep,
+      cpf: usuario.cpf,
+      cidade: usuario.cidade,
+      rua: usuario.rua,
+      numero: usuario.numero,
+      bairro: usuario.bairro,
     );
 
     await db.insert(_tabela, usuarioParaInserir.toMap());
   }
 
   Future<Usuario?> autenticar(String email, String senha) async {
-    final db = await _abrirBanco();
+    final db = await AppDatabase.instance.database;
     final resultado = await db.query(
       _tabela,
       where: 'email = ? AND senha = ?',
@@ -60,18 +45,18 @@ class UsuarioDao {
   }
 
   Future<List<Usuario>> listarUsuarios() async {
-    final db = await _abrirBanco();
+    final db = await AppDatabase.instance.database;
     final resultado = await db.query(_tabela);
     return resultado.map((mapa) => Usuario.fromMap(mapa)).toList();
   }
 
   Future<void> deletarUsuario(int id) async {
-    final db = await _abrirBanco();
+    final db = await AppDatabase.instance.database;
     await db.delete(_tabela, where: 'id = ?', whereArgs: [id]);
   }
 
   Future<void> atualizarUsuario(Usuario usuario) async {
-    final db = await _abrirBanco();
+    final db = await AppDatabase.instance.database;
     await db.update(
       _tabela,
       usuario.toMap(),

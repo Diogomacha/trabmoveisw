@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
-import '../models/usuario.dart';
 import '../models/produtos.dart';
 import '../persistence/camisa_dao.dart';
 import '../widgets/produto_card.dart';
-import '../widgets/menu_usuario.dart';
+import '../widgets/menu_inferior.dart';
 
-class ProdutoUsuarioPage extends StatefulWidget {
-  final Usuario usuario;
-
-  const ProdutoUsuarioPage({Key? key, required this.usuario}) : super(key: key);
+class ProdutoPage extends StatefulWidget {
+  const ProdutoPage({Key? key}) : super(key: key);
 
   @override
-  State<ProdutoUsuarioPage> createState() => _ProdutoUsuarioPageState();
+  State<ProdutoPage> createState() => _ProdutoPageState();
 }
 
-class _ProdutoUsuarioPageState extends State<ProdutoUsuarioPage> {
+class _ProdutoPageState extends State<ProdutoPage> {
   int _indiceSelecionado = 0;
   List<Camisa> camisas = [];
 
@@ -31,24 +28,25 @@ class _ProdutoUsuarioPageState extends State<ProdutoUsuarioPage> {
     });
   }
 
+  Future<void> _abrirCadastro() async {
+    await Navigator.pushNamed(context, '/cadastro');
+    _carregarCamisas();
+  }
+
   void _aoSelecionarMenu(int index) {
     setState(() {
       _indiceSelecionado = index;
     });
 
     switch (index) {
-      case 0:
-
-        Navigator.pushNamed(context, '/perfil', arguments: widget.usuario);
-        break;
       case 1:
-        Navigator.pushNamed(context, '/pedidos');
+        _abrirCadastro();
         break;
       case 2:
-        Navigator.pushNamed(context, '/carrinho');
+        Navigator.pushNamed(context, '/gerenciar');
         break;
-      case 3:
-        Navigator.pushNamed(context, '/contato');
+    // case 0: Já está na home
+      default:
         break;
     }
   }
@@ -56,20 +54,38 @@ class _ProdutoUsuarioPageState extends State<ProdutoUsuarioPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        title: const Text('SPORTS+'),
+        title: const Text(
+          'SPORTS+',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            letterSpacing: 1.2,
+          ),
+        ),
         backgroundColor: Colors.green[700],
         centerTitle: true,
+        elevation: 4,
       ),
-      backgroundColor: Colors.grey[100],
       body: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: GridView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: camisas.isEmpty
+            ? Center(
+          child: Text(
+            'Nenhuma camisa disponível',
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.grey[600],
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        )
+            : GridView.builder(
           itemCount: camisas.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            crossAxisSpacing: 15,
-            mainAxisSpacing: 15,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
             childAspectRatio: 0.65,
           ),
           itemBuilder: (context, index) {
@@ -78,7 +94,7 @@ class _ProdutoUsuarioPageState extends State<ProdutoUsuarioPage> {
           },
         ),
       ),
-      bottomNavigationBar: MenuUsuario(
+      bottomNavigationBar: MenuInferior(
         indiceSelecionado: _indiceSelecionado,
         aoSelecionar: _aoSelecionarMenu,
       ),

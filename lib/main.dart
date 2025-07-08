@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'views/login_page.dart';
-import 'views/cadastro_page.dart';
-import 'views/produto_page.dart';
-import 'views/produto_usuario_page.dart';
-import 'views/cadastro_camisa_page.dart';
-import 'views/produto_gerenciar_page.dart';
-import 'views/perfil_page.dart';
-import 'views/carrinho_page.dart';
+import 'pages/login_page.dart';
+import 'pages/cadastro_page.dart';
+import 'pages/produto_page.dart';
+import 'pages/produto_usuario_page.dart';
+import 'pages/cadastro_camisa_page.dart';
+import 'pages/produto_gerenciar_page.dart';
+import 'pages/perfil_page.dart';
+import 'pages/carrinho_page.dart';
 
 import 'models/usuario.dart';
 import 'controllers/carrinho_controller.dart';

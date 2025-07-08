@@ -28,23 +28,27 @@ class MenuInferior extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       currentIndex: indiceSelecionado,
-      selectedItemColor: Colors.green,
-      unselectedItemColor: Colors.grey,
       onTap: (index) {
         aoSelecionar(index);
         _navegarPeloIndice(context, index);
       },
+      selectedItemColor: Colors.green[700],
+      unselectedItemColor: Colors.grey[500],
+      backgroundColor: Colors.white,
+      elevation: 10,
+      selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
+      type: BottomNavigationBarType.fixed,
       items: const [
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
+          icon: Icon(Icons.home_outlined),
           label: 'Início',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.add),
-          label: 'Cadastrar',
+          icon: Icon(Icons.add_circle_outline),
+          label: 'Novo',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.build),
+          icon: Icon(Icons.settings_outlined),
           label: 'Gerenciar',
         ),
       ],

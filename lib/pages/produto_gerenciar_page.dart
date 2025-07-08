@@ -60,7 +60,7 @@ class _CamisaGerenciarPageState extends State<CamisaGerenciarPage> {
         Navigator.pushReplacementNamed(context, '/cadastro');
         break;
       case 2:
-
+      // Já está na página gerenciar
         break;
     }
   }
@@ -81,41 +81,69 @@ class _CamisaGerenciarPageState extends State<CamisaGerenciarPage> {
       appBar: AppBar(
         title: const Text('Gerenciar Camisas'),
         backgroundColor: Colors.green[700],
+        elevation: 4,
       ),
       body: camisas.isEmpty
-          ? const Center(child: Text('Nenhuma camisa cadastrada.'))
+          ? Center(
+        child: Text(
+          'Nenhuma camisa cadastrada.',
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.grey[600],
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      )
           : ListView.builder(
+        padding: const EdgeInsets.symmetric(vertical: 8),
         itemCount: camisas.length,
         itemBuilder: (context, index) {
           final camisa = camisas[index];
           return Card(
-            margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            elevation: 3,
             child: ListTile(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               leading: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(12),
                 child: Image(
                   image: _getImage(camisa.imagem),
-                  width: 60,
-                  height: 60,
+                  width: 70,
+                  height: 70,
                   fit: BoxFit.cover,
                   errorBuilder: (_, __, ___) =>
-                  const Icon(Icons.broken_image, size: 60),
+                  const Icon(Icons.broken_image, size: 70, color: Colors.grey),
                 ),
               ),
-              title: Text(camisa.nome),
+              title: Text(
+                camisa.nome,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
               subtitle: Text(
                 camisa.precoFormatado,
-                style: const TextStyle(color: Colors.green),
+                style: TextStyle(
+                  color: Colors.green[700],
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
               ),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.edit, color: Colors.blue),
+                    icon: const Icon(Icons.edit, color: Colors.blueAccent, size: 28),
+                    tooltip: 'Editar',
                     onPressed: () => _editarCamisa(camisa),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.delete, color: Colors.red),
+                    icon: const Icon(Icons.delete, color: Colors.redAccent, size: 28),
+                    tooltip: 'Excluir',
                     onPressed: () => _excluirCamisa(camisa.id!),
                   ),
                 ],

@@ -14,26 +14,29 @@ class MenuUsuario extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       currentIndex: indiceSelecionado,
-      selectedItemColor: Colors.green[800],
-      unselectedItemColor: Colors.grey,
       onTap: aoSelecionar,
+      selectedItemColor: Colors.green[800],
+      unselectedItemColor: Colors.grey[500],
+      backgroundColor: Colors.white,
       type: BottomNavigationBarType.fixed,
+      elevation: 10,
+      selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
       items: const [
         BottomNavigationBarItem(
-          icon: Icon(Icons.person),
+          icon: Icon(Icons.person_outline),
           label: 'Perfil',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.receipt_long),
+          icon: Icon(Icons.receipt_long_outlined),
           label: 'Pedidos',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.shopping_cart),
+          icon: Icon(Icons.shopping_cart_outlined),
           label: 'Carrinho',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.support_agent),
-          label: 'Fale Conosco',
+          icon: Icon(Icons.support_agent_outlined),
+          label: 'Ajuda',
         ),
       ],
     );
