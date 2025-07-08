@@ -56,7 +56,7 @@ class _CadastroCamisaPageState extends State<CadastroCamisaPage> {
         descricao: _descricaoController.text.trim(),
         preco: precoCorrigido,
         imagem: _imagemSelecionada ?? '',
-        tamanho: _tamanhoSelecionado ?? 'M', // padrão se não for selecionado
+        tamanho: _tamanhoSelecionado ?? 'M',
       );
 
       if (widget.camisaParaEditar == null) {

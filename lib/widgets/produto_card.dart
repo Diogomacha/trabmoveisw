@@ -58,7 +58,7 @@ class CamisaCard extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(12),
-                child: SingleChildScrollView(  // <-- Corrigido aqui
+                child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -108,7 +108,7 @@ class CamisaCard extends StatelessWidget {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 8),  // substitui Spacer por SizedBox para evitar problema de overflow
+                      const SizedBox(height: 8),
 
                       ElevatedButton.icon(
                         onPressed: () {

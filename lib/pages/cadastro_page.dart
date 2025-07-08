@@ -115,7 +115,7 @@ class _CadastroPageState extends State<CadastroPage> {
                 ),
                 const SizedBox(height: 32),
 
-                // Campos principais
+
                 _campo(_nomeController, 'Nome', Icons.person_outline),
                 const SizedBox(height: 16),
                 _campo(_emailController, 'E-mail', Icons.email_outlined),

@@ -60,7 +60,7 @@ class _CamisaGerenciarPageState extends State<CamisaGerenciarPage> {
         Navigator.pushReplacementNamed(context, '/cadastro');
         break;
       case 2:
-      // Já está na página gerenciar
+
         break;
     }
   }

@@ -6,7 +6,7 @@ class Camisa {
   final String imagem;
   final String descricao;
   final double preco;
-  final String? tamanho; // Novo campo
+  final String? tamanho;
 
   Camisa({
     this.id,
